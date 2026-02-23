@@ -5,6 +5,22 @@
 
 /* --- Design Tokens --- */
 :root {
+  /* --- Default Theme Variables (Light) --- */
+  --bg-primary: #FAFAF5;
+  --bg-secondary: #FFFFFF;
+  --bg-alternate: #F4F4EE;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+  --text-on-dark: #FAFAF5;
+  --nav-bg: rgba(250, 250, 245, 0.97);
+  --card-bg: #FFFFFF;
+  --card-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --border-color: rgba(26, 26, 26, 0.1);
+  --hero-bg: #FAFAF5;
+  --hero-text: #1A1A1A;
+  --hero-img-opacity: 0.25;
+  --hero-bg-text-opacity: 0.03;
+
   --color-gold: #F2C94C;
   --color-gold-dark: #D4A017;
   --color-gold-light: #FBE8A6;
@@ -33,6 +49,23 @@
   --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+[data-theme="dark"] {
+  --bg-primary: #1A1A1A;
+  --bg-secondary: #2D2D2D;
+  --bg-alternate: #242424;
+  --text-primary: #FAFAF5;
+  --text-secondary: #B0A89A;
+  --text-on-dark: #FAFAF5;
+  --nav-bg: rgba(26, 26, 26, 0.97);
+  --card-bg: #2D2D2D;
+  --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  --border-color: rgba(255, 255, 255, 0.06);
+  --hero-bg: #1A1A1A;
+  --hero-text: #FAFAF5;
+  --hero-img-opacity: 0.15;
+  --hero-bg-text-opacity: 0.4;
+}
+
 /* --- Reset & Base --- */
 *,
 *::before,
@@ -51,10 +84,11 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--color-off-white);
-  color: var(--color-charcoal);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 a {
@@ -134,9 +168,21 @@ p {
   transition: background var(--transition-base), box-shadow var(--transition-base);
 }
 
+.hero .nav:not(.scrolled) .nav__link {
+  color: var(--hero-text);
+}
+
+.hero .nav:not(.scrolled) .nav__hamburger span {
+  background: var(--hero-text);
+}
+
 .nav.scrolled {
-  background: rgba(26, 26, 26, 0.97);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  background: var(--nav-bg);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .nav.scrolled {
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
 }
 
 .nav__inner {
@@ -167,7 +213,7 @@ p {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--color-off-white);
+  color: var(--text-primary);
   position: relative;
   padding: var(--space-xs) 0;
   transition: color var(--transition-base);
@@ -228,7 +274,7 @@ p {
   display: block;
   width: 28px;
   height: 2px;
-  background: var(--color-off-white);
+  background: var(--text-primary);
   transition: all var(--transition-base);
   transform-origin: center;
 }
@@ -254,7 +300,7 @@ p {
   width: 80%;
   max-width: 400px;
   height: 100vh;
-  background: var(--color-charcoal);
+  background: var(--bg-secondary);
   padding: var(--space-4xl) var(--space-2xl);
   transition: right var(--transition-slow);
   z-index: 999;
@@ -268,7 +314,7 @@ p {
   display: block;
   font-size: 1.3rem;
   padding: var(--space-md) 0;
-  border-bottom: 1px solid var(--color-charcoal-mid);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .nav__mobile-menu .nav__cta {
@@ -296,16 +342,19 @@ p {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background: var(--color-charcoal);
+  background: var(--hero-bg);
+  color: var(--hero-text);
   overflow: hidden;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .hero__bg-image {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.15;
-  filter: grayscale(1) contrast(1.2);
+  opacity: var(--hero-img-opacity);
+  filter: grayscale(1) contrast(1.1);
+  transition: opacity var(--transition-base);
 }
 
 .hero__bg-image img {
@@ -322,12 +371,13 @@ p {
   font-family: var(--font-heading);
   font-size: clamp(6rem, 18vw, 20rem);
   font-weight: 900;
-  color: var(--color-charcoal-mid);
+  color: var(--hero-text);
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
   letter-spacing: -0.04em;
-  opacity: 0.4;
+  opacity: var(--hero-bg-text-opacity);
+  transition: opacity var(--transition-base), color var(--transition-base);
 }
 
 .hero__grain {
@@ -352,27 +402,51 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: var(--color-gold);
+  background: var(--color-gold);
+  color: var(--color-charcoal);
   border: 1px solid var(--color-gold);
   padding: var(--space-sm) var(--space-lg);
   margin-bottom: var(--space-xl);
+  transition: all var(--transition-base);
+}
+
+[data-theme="dark"] .hero__badge {
+  background: transparent;
+  color: var(--color-gold);
 }
 
 .hero__title {
-  color: var(--color-off-white);
+  color: var(--hero-text);
   margin-bottom: var(--space-lg);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .hero__title {
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .hero__title-accent {
-  color: var(--color-gold);
+  color: var(--text-primary);
   display: block;
+  text-decoration: underline;
+  text-decoration-color: var(--color-gold);
+  text-underline-offset: 8px;
+}
+
+[data-theme="dark"] .hero__title-accent {
+  color: var(--color-gold);
+  text-decoration: none;
 }
 
 .hero__subtitle {
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
   font-size: clamp(1rem, 1.8vw, 1.35rem);
   margin-bottom: var(--space-2xl);
   max-width: 550px;
+}
+
+[data-theme="dark"] .hero__subtitle {
+  color: var(--color-warm-gray);
 }
 
 .hero__actions {
@@ -412,13 +486,13 @@ p {
 
 .btn--outline {
   background: transparent;
-  color: var(--color-off-white);
-  border-color: var(--color-off-white);
+  color: var(--hero-text);
+  border-color: var(--hero-text);
 }
 
 .btn--outline:hover {
-  background: var(--color-off-white);
-  color: var(--color-charcoal);
+  background: var(--hero-text);
+  color: var(--hero-bg);
   transform: translateY(-3px);
 }
 
@@ -504,8 +578,8 @@ p {
 }
 
 .section--dark {
-  background: var(--color-charcoal);
-  color: var(--color-off-white);
+  background: var(--bg-alternate);
+  color: var(--text-primary);
 }
 
 .section__header {
@@ -550,11 +624,12 @@ p {
 
 .service-card {
   padding: var(--space-2xl);
-  background: var(--color-charcoal-mid);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-spring);
+  transition: all var(--transition-spring), background var(--transition-base);
+  box-shadow: var(--card-shadow);
 }
 
 .service-card::before {
@@ -609,7 +684,7 @@ p {
   font-size: 1.15rem;
   font-weight: 700;
   margin-bottom: var(--space-md);
-  color: var(--color-off-white);
+  color: var(--text-primary);
 }
 
 .service-card__list {
@@ -620,7 +695,7 @@ p {
 
 .service-card__list li {
   font-size: 0.9rem;
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
   padding-left: var(--space-lg);
   position: relative;
   line-height: 1.5;
@@ -644,15 +719,15 @@ p {
 
 .about__text p {
   margin-bottom: var(--space-lg);
-  color: var(--color-charcoal);
+  color: var(--text-primary);
   line-height: 1.8;
 }
 
 .about__img {
   margin-top: var(--space-2xl);
-  border: 1px solid rgba(26, 26, 26, 0.1);
+  border: 1px solid var(--border-color);
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--card-shadow);
 }
 
 .about__img img {
@@ -669,14 +744,15 @@ p {
 
 .about__feature {
   padding: var(--space-lg);
-  border: 1px solid rgba(26, 26, 26, 0.1);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   transition: all var(--transition-spring);
 }
 
 .about__feature:hover {
   border-color: var(--color-gold);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--card-shadow);
 }
 
 .about__feature-icon {
@@ -693,7 +769,7 @@ p {
 
 .about__feature-desc {
   font-size: 0.85rem;
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
@@ -734,7 +810,7 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
   margin-bottom: var(--space-xs);
 }
 
@@ -770,7 +846,7 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
 }
 
 .contact__form-input,
@@ -778,10 +854,10 @@ p {
   font-family: var(--font-body);
   font-size: 0.95rem;
   padding: var(--space-md);
-  background: var(--color-charcoal-mid);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--color-off-white);
-  transition: border-color var(--transition-base);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  transition: border-color var(--transition-base), background var(--transition-base);
   outline: none;
 }
 
@@ -799,11 +875,67 @@ p {
   align-self: flex-start;
 }
 
+/* --- Theme Toggle --- */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  border-radius: 50%;
+  font-size: 1.2rem;
+}
+
+.hero .theme-toggle {
+  color: var(--color-off-white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav.scrolled .theme-toggle {
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+.theme-toggle:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-charcoal);
+  transform: rotate(15deg) scale(1.1);
+}
+
+.theme-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+.theme-toggle .sun {
+  display: block;
+}
+
+.theme-toggle .moon {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .sun {
+  display: none;
+}
+
+[data-theme="dark"] .theme-toggle .moon {
+  display: block;
+}
+
 /* --- FOOTER --- */
 .footer {
-  background: var(--color-charcoal);
-  border-top: 1px solid var(--color-charcoal-mid);
+  background: var(--bg-alternate);
+  border-top: 1px solid var(--border-color);
   padding: var(--space-2xl) 0;
+  color: var(--text-primary);
 }
 
 .footer__inner {
@@ -826,7 +958,7 @@ p {
 
 .footer__link {
   font-size: 0.8rem;
-  color: var(--color-warm-gray);
+  color: var(--text-secondary);
   transition: color var(--transition-base);
 }
 
@@ -873,7 +1005,7 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-charcoal);
+  color: var(--text-primary);
 }
 
 /* --- SCROLL REVEAL ANIMATIONS --- */

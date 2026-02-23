@@ -6,6 +6,25 @@
 (function () {
   'use strict';
 
+  // --- Theme Management ---
+  const themeToggle = document.getElementById('themeToggle');
+  const themeToggleMobile = document.getElementById('themeToggleMobile');
+  const currentTheme = localStorage.getItem('theme') || 'light';
+
+  if (currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  function toggleTheme() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+
   // --- Intersection Observer for Scroll Reveal ---
   const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger');
 
